@@ -1,0 +1,43 @@
+name: Checking Lint Rules
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install poetry
+        run: |
+          curl -sSL 'https://install.python-poetry.org' | python
+          echo "$HOME/.poetry/bin" >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.in-project false
+          poetry run pip install -U pip
+          poetry install --only lint
+      
+      - name: Ruff check
+        run: poetry run ruff check --output-format=github ./snipstr ./tests 
+
+      - name: WPS rules
+        run: poetry run flake8 ./snipstr/
+
+      - name: Mypy
+        run: poetry run mypy ./snipstr/
+      
+      - name: Code Spell
+        run: poetry run codespell snipstr tests README.md CONTRIBUTING.md
