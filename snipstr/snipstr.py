@@ -24,19 +24,21 @@ class SnipStr(ComparableByLength):
     def source(self) -> Any:
         return self._source
 
-    def snip_to(self, value: PositiveInt, /) -> SelfSnipStr:
-        if value <= 0:
-            err = 'The maximum length must be a positive number. You have set {0}'
-            raise ValueError(err.format(value))
-        self._max_lenght = value
+    def snip_to(self, size: PositiveInt, /) -> SelfSnipStr:
+        if not isinstance(size, int):
+            raise
+        if size <= 0:
+            raise
+
+        self._max_lenght = size
 
         return self
 
-    def snip_side(self, value: SnipSide, /) -> SelfSnipStr:
-        if value not in ('left', 'right'):
+    def snip_side(self, side: SnipSide, /) -> SelfSnipStr:
+        if side not in ('left', 'right'):
             raise
 
-        self._side = value
+        self._side = side
 
         return self
 
@@ -45,22 +47,24 @@ class SnipStr(ComparableByLength):
 
         return self
 
-    def _cut_back(self, value: str) -> str:
+    def _cut_back(self, current: str) -> str:
         if self._side == 'right':
-            value = value[:self._max_lenght]
+            current = current[:self._max_lenght]
         elif self._side == 'left':
-            value = value[self._max_lenght:]
+            current = current[self._max_lenght:]
 
-        return value
+        return current
 
-    def _add_ellipsis(self, value: str) -> str:
-        if self._w_ellipsis:
+    def _add_ellipsis(self, current: str) -> str:
+        if self._w_ellipsis :
+            elps = '...'
+
             if self._side == 'right':
-                value = value[:-3] + '...'
+                current = current[:-3] + elps
             elif self._side == 'left':
-                value = '...' + value[3:]
+                current = elps + current[3:]
 
-        return value
+        return current
 
     def __len__(self) -> int:
         return self._max_lenght
