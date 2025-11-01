@@ -26,6 +26,9 @@ select = [
 ]
 ignore = [
     # "COM812",
+    "D107",
+    "D100",
+    "D105",
 ]
 external = [ "WPS" ]
 
