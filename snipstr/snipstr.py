@@ -78,9 +78,14 @@ class SnipStr(ComparableByLength):
         return current  # noqa: RET504
 
     def __hash__(self) -> int:
-        return hash(self._source, self._max_lenght, self._side, self._w_ellipsis)
+        return hash(
+            self._source,
+            self._max_lenght,
+            self._side,
+            self._w_ellipsis,
+        )
 
-    def __eq__(self, other: SnipStrInstance) -> bool:
+    def __eq__(self, other: SnipStrInstance | Any) -> bool:
         if not isinstance(other, SnipStr):
             return NotImplemented
 
