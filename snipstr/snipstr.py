@@ -208,3 +208,6 @@ class SnipStr(ComparableByLength):
             (self._side == other._side),
             (self._w_ellipsis == other._w_ellipsis),
         ))
+
+    def _total_tength(self):
+        return self._max_lenght + (3 if self._w_ellipsis else 0)

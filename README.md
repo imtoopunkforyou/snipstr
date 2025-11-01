@@ -16,3 +16,15 @@ A lightweight library for easy-to-use text truncation with a friendly interface.
 # ⚠️ Attention ⚠️
 - In development.  
 - May not work as you expect and may cause errors.
+
+
+### Example
+```python
+>>> from snipstr.snipstr import SnipStr
+>>> long_text = 'Python source code and installers are available for download for all versions!'
+>>> s = SnipStr(long_text)
+>>> s.snip_to(10).with_ellipsis()
+<snipstr.snipstr.SnipStr object at 0x102df6fe0>
+>>> str(s)
+'Python ...'
+```
