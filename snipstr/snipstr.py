@@ -1,11 +1,17 @@
-from typing import Annotated, Self, final, Any, ClassVar, TypeAlias, Literal
+from typing import Annotated, Any, Literal, TypeAlias, TypeVar, final
 
-from annotated_types import Gt
+import annotated_types
+
+from snipstr.comparison import ComparableByLength
 
 SnipSide: TypeAlias = Literal['left', 'right']
+SelfSnipStr = TypeVar('SelfSnipStr', bound='SnipStr')
+SnipStrInstance = TypeVar('SnipStrInstance', bound='SnipStr')
+
+PositiveInt = Annotated[int, annotated_types.Gt(0)]
 
 @final
-class SnipStr:
+class SnipStr(ComparableByLength):
 
     def __init__(self, source: Any) -> None:
         self._source = source
@@ -18,7 +24,7 @@ class SnipStr:
     def source(self) -> Any:
         return self._source
 
-    def snip_to(self, value: Annotated[int, Gt(0)], /) -> 'SnipStr':
+    def snip_to(self, value: PositiveInt, /) -> SelfSnipStr:
         if value <= 0:
             err = 'The maximum length must be a positive number. You have set {0}'
             raise ValueError(err.format(value))
@@ -26,7 +32,7 @@ class SnipStr:
 
         return self
 
-    def snip_side(self, value: SnipSide, /) -> 'SnipStr':
+    def snip_side(self, value: SnipSide, /) -> SelfSnipStr:
         if value not in ('left', 'right'):
             raise
 
@@ -34,16 +40,10 @@ class SnipStr:
 
         return self
 
-    def with_ellipsis(self, value: bool | None = None, /) -> 'SnipStr':
-        if value is not None or not isinstance(value, bool):
-            raise
-
-        self._w_ellipsis = True if value is None else value
+    def with_ellipsis(self) -> SelfSnipStr:
+        self._w_ellipsis = True
 
         return self
-
-    def as_string(self) -> str:
-        return str(self)
 
     def _cut_back(self, value: str) -> str:
         if self._side == 'right':
@@ -76,7 +76,7 @@ class SnipStr:
     def __hash__(self) -> int:
         return hash(self._source, self._max_lenght, self._side, self._w_ellipsis)
 
-    def __eq__(self, other: 'SnipStr') -> bool:
+    def __eq__(self, other: SnipStrInstance) -> bool:
         if not isinstance(other, SnipStr):
             return NotImplemented
 
@@ -86,26 +86,3 @@ class SnipStr:
             (self._side == other._side),
             (self._w_ellipsis == other._w_ellipsis),
         ))
-
-    def _result_length(self) -> int:
-        return self._max_lenght + (3 if self._w_ellipsis else 0)
-
-    def __lt__(self, other: 'SnipStr') -> bool:
-        if not isinstance(other, SnipStr):
-            return NotImplemented
-        return self._result_length() < other._result_length()
-
-    def __le__(self, other: 'SnipStr') -> bool:
-        if not isinstance(other, SnipStr):
-            return NotImplemented
-        return self._result_length() <= other._result_length()
-
-    def __gt__(self, other: 'SnipStr') -> bool:
-        if not isinstance(other, SnipStr):
-            return NotImplemented
-        return self._result_length() > other._result_length()
-
-    def __ge__(self, other: 'SnipStr') -> bool:
-        if not isinstance(other, SnipStr):
-            return NotImplemented
-        return self._result_length() >= other._result_length()

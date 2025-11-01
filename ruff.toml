@@ -34,6 +34,9 @@ external = [ "WPS" ]
 
 [lint.extend-per-file-ignores]
 "tests/*" = [
+]
+"snipstr/snipstr.py" = [
+    "ANN401",
 ] 
 
 [format]
