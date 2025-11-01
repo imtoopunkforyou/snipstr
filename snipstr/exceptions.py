@@ -18,18 +18,11 @@ class SnipSizeIsNotPositiveIntError(ValueError):
         super().__init__(msg.format(size))
 
 
-class LengthIsNotPositiveError(ValueError):
-    def __init__(self, max_len: Any, /) -> None:
+class SnipSideError(ValueError):
+    def __init__(self, side: Any, /) -> None:
         msg = (
-            'The maximum length must be an positive integer. '
-            'You are trying to specify `{0}`'
+            'The side can only be the values of `left` or `right`. '
+            'Value of `{0}` is not suitable'
         )
-        super().__init__(msg.format(max_len))
+        super().__init__(msg.format(side))
 
-class InvalidSnipArgumentError(ValueError):
-    def __init__(self, value: Any, /) -> None:
-        msg = (
-            'You can only snip by arguments `left`, `right` or `center`. '
-            'Argument {0} is not suitable.'
-        )
-        super().__init__(msg.format(value))
