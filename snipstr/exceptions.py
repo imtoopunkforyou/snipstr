@@ -1,21 +1,22 @@
 from typing import Any
 
 
-class IsNotStringError(TypeError):
-    def __init__(self, source: Any, /) -> None:
+class SnipSizeIsNotIntError(TypeError):
+    def __init__(self, size: Any, /) -> None:
         msg = (
-            'The object must be a string. '
-            'Transform your `{0}` object yourself.'
+            'You must specify int for snip size. '
+            'Value of `{0}` is not suitable'
         )
-        super().__init__(msg.format(source))
+        super().__init__(msg.format(size))
 
-class LengthIsNotIntError(TypeError):
-    def __init__(self, max_len: Any, /) -> None:
+class SnipSizeIsNotPositiveIntError(ValueError):
+    def __init__(self, size: Any, /) -> None:
         msg = (
-            'The maximum length must be an integer. '
-            'You are trying to specify `{0}`'
+            'You must specify positive number for snip size. '
+            'Value of `{0}` is not suitable'
         )
-        super().__init__(msg.format(max_len))
+        super().__init__(msg.format(size))
+
 
 class LengthIsNotPositiveError(ValueError):
     def __init__(self, max_len: Any, /) -> None:

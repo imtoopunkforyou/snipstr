@@ -3,6 +3,7 @@ from typing import Annotated, Any, Literal, TypeAlias, TypeVar, final
 import annotated_types
 
 from snipstr.comparison import ComparableByLength
+from snipstr.exceptions import SnipSizeIsNotPositiveIntError, SnipSizeIsNotIntError
 
 SnipSide: TypeAlias = Literal['left', 'right']
 SelfSnipStr = TypeVar('SelfSnipStr', bound='SnipStr')
@@ -26,9 +27,9 @@ class SnipStr(ComparableByLength):
 
     def snip_to(self, size: PositiveInt, /) -> SelfSnipStr:
         if not isinstance(size, int):
-            raise
+            raise SnipSizeIsNotIntError(size)
         if size <= 0:
-            raise
+            raise SnipSizeIsNotPositiveIntError(size)
 
         self._max_lenght = size
 
