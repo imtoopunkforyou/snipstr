@@ -3,7 +3,7 @@ from typing import Annotated, Any, Literal, TypeAlias, TypeVar, final
 import annotated_types
 
 from snipstr.comparison import ComparableByLength
-from snipstr.exceptions import (
+from snipstr.errors import (
     SnipSideError,
     SnipSizeIsNotIntError,
     SnipSizeIsNotPositiveIntError,

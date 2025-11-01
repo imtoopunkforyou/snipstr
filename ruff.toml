@@ -38,7 +38,7 @@ external = [ "WPS" ]
 "snipstr/snipstr.py" = [
     "ANN401",
 ]
-"snipstr/exceptions.py" = [
+"snipstr/errors.py" = [
     "ANN401",
 ] 
 
