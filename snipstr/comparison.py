@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import TypeVar
 
-_T = TypeVar('T', bound='ComparableByLength')
+_T = TypeVar('_T', bound='ComparableByLength')
 
 class ComparableByLength(ABC):
 
