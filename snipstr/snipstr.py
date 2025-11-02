@@ -76,7 +76,7 @@ class SnipStr(ComparableByLength):
 
         return self
 
-    def snip_side(self, side: SnipSide, /) -> SelfSnipStr:
+    def by_side(self, side: SnipSide, /) -> SelfSnipStr:
         """Set the side from which to truncate the string.
 
         Args:
