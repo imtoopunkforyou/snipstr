@@ -14,6 +14,7 @@ SnipStrInstance = TypeVar('SnipStrInstance', bound='SnipStr')
 
 PositiveInt = Annotated[int, 'An integer that is greater than 0.']
 
+
 @final
 class SnipStr(ComparableByLength):
     """Example:
@@ -60,9 +61,9 @@ class SnipStr(ComparableByLength):
 
     def _cut_back(self, current: str) -> str:
         if self._side == 'right':
-            current = current[:self._max_lenght]
+            current = current[: self._max_lenght]
         elif self._side == 'left':
-            current = current[self._max_lenght:]
+            current = current[self._max_lenght :]
 
         return current
 
@@ -99,12 +100,14 @@ class SnipStr(ComparableByLength):
         if not isinstance(other, SnipStr):
             return NotImplemented
 
-        return all((
-            (self._source == other._source),
-            (self._max_lenght == other._max_lenght),
-            (self._side == other._side),
-            (self._replacement_symbol == other._replacement_symbol),
-        ))
+        return all(
+            (
+                (self._source == other._source),
+                (self._max_lenght == other._max_lenght),
+                (self._side == other._side),
+                (self._replacement_symbol == other._replacement_symbol),
+            ),
+        )
 
     def _total_tength(self) -> int:
         return self._max_lenght + len(self._replacement_symbol)

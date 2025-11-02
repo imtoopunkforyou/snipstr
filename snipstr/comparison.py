@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import TypeVar
 
-_T = TypeVar('_T', bound='ComparableByLength')
+_ComparableByLengthInstance = TypeVar(
+    '_ComparableByLengthInstance',
+    bound='ComparableByLength',
+)
+
 
 class ComparableByLength(ABC):
     """Abstract base class for objects that can be compared by length.
@@ -14,18 +18,7 @@ class ComparableByLength(ABC):
     which must be implemented by subclasses.
     """
 
-    @abstractmethod
-    def _total_tength(self) -> int:
-        """Calculate the total length of the object.
-
-        This method must be implemented by subclasses to define how
-        the length should be calculated for comparison purposes.
-
-        Returns:
-            The total length of the object as an integer.
-        """
-
-    def __lt__(self, other: _T) -> bool:
+    def __lt__(self, other: _ComparableByLengthInstance) -> bool:
         """Compare if this object is less than another by length.
 
         Args:
@@ -40,7 +33,7 @@ class ComparableByLength(ABC):
             return NotImplemented
         return self._total_tength() < other._result_length()
 
-    def __le__(self, other: _T) -> bool:
+    def __le__(self, other: _ComparableByLengthInstance) -> bool:
         """Compare if this object is less than or equal to another by length.
 
         Args:
@@ -56,7 +49,7 @@ class ComparableByLength(ABC):
 
         return self._total_tength() <= other._result_length()
 
-    def __gt__(self, other: _T) -> bool:
+    def __gt__(self, other: _ComparableByLengthInstance) -> bool:
         """Compare if this object is greater than another by length.
 
         Args:
@@ -72,7 +65,7 @@ class ComparableByLength(ABC):
 
         return self._total_tength() > other._result_length()
 
-    def __ge__(self, other: _T) -> bool:
+    def __ge__(self, other: _ComparableByLengthInstance) -> bool:
         """Compare if this object is greater than or equal to another by length.
 
         Args:
@@ -87,3 +80,14 @@ class ComparableByLength(ABC):
             return NotImplemented
 
         return self._total_tength() >= other._result_length()
+
+    @abstractmethod
+    def _total_tength(self) -> int:
+        """Calculate the total length of the object.
+
+        This method must be implemented by subclasses to define how
+        the length should be calculated for comparison purposes.
+
+        Returns:
+            The total length of the object as an integer.
+        """

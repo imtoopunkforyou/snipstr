@@ -1,2 +1,2 @@
 def test_one_is_one() -> None:
-    assert 1 == 1
+    assert 1 == 1  # noqa: PLR0133
