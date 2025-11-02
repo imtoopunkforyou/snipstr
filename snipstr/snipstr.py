@@ -21,9 +21,7 @@ class SnipStr(ComparableByLength):
     """
 
     def __init__(self, source: Any) -> None:
-
         self._source = source
-
         self._max_lenght = len(str(source))
         self._side = 'right'
         self._replacement_symbol = ''
