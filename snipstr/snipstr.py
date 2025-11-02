@@ -12,7 +12,7 @@ SnipSide: TypeAlias = Literal['left', 'right']
 SelfSnipStr = TypeVar('SelfSnipStr', bound='SnipStr')
 SnipStrInstance = TypeVar('SnipStrInstance', bound='SnipStr')
 
-PositiveInt = Annotated[int, 'A positive integer.']
+PositiveInt = Annotated[int, 'An integer that is greater than 0.']
 
 @final
 class SnipStr(ComparableByLength):
