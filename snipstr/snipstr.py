@@ -1,13 +1,12 @@
-from typing import Annotated, Any, Literal, TypeAlias, TypeVar, final
+from typing import Annotated, Any, TypeVar, final
 
 from snipstr.comparison import ComparableByLength
+from snipstr.constants import Sides
 from snipstr.errors import (
     SnipSideError,
     SnipSizeIsNotIntError,
     SnipSizeIsNotPositiveIntError,
 )
-from snipstr.constants import Sides
-
 
 SelfSnipStr = TypeVar('SelfSnipStr', bound='SnipStr')
 SnipStrInstance = TypeVar('SnipStrInstance', bound='SnipStr')
