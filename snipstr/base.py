@@ -1,93 +1,103 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar
+from typing import Any, TypeVar
 
-_ComparableByLengthInstance = TypeVar(
-    '_ComparableByLengthInstance',
-    bound='ComparableByLength',
-)
+from snipstr.constants import Sides
+from snipstr.types import PositiveInt
+
+SelfAbstractSnipStr = TypeVar('SelfAbstractSnipStr', bound='AbstractSnipStr')
 
 
-class ComparableByLength(ABC):
-    """Abstract base class for objects that can be compared by length.
+class SlotsSnipStr:
+    __slots__ = (
+        '_lenght',
+        '_replacement_symbol',
+        '_side',
+        '_source',
+    )
 
-    This class provides comparison operators (<, <=, >, >=) based on the
-    total length of objects. Subclasses must implement the `_total_tength`
-    method to define how the length is calculated.
 
-    The comparison is performed using the abstract `_total_tength` method
-    which must be implemented by subclasses.
-    """
-
-    def __lt__(self, other: _ComparableByLengthInstance) -> bool:
-        """Compare if this object is less than another by length.
-
-        Args:
-            other: Another object of the same type to compare with.
-
-        Returns:
-            True if this object's length is less than the other's length,
-            False otherwise. Returns NotImplemented if other is not an
-            instance of the same type.
-        """
-        if not isinstance(other, type(self)):
-            return NotImplemented
-        return self._total_tength() < other._result_length()
-
-    def __le__(self, other: _ComparableByLengthInstance) -> bool:
-        """Compare if this object is less than or equal to another by length.
-
-        Args:
-            other: Another object of the same type to compare with.
-
-        Returns:
-            True if this object's length is less than or equal to the other's
-            length, False otherwise. Returns NotImplemented if other is not an
-            instance of the same type.
-        """
-        if not isinstance(other, type(self)):
-            return NotImplemented
-
-        return self._total_tength() <= other._result_length()
-
-    def __gt__(self, other: _ComparableByLengthInstance) -> bool:
-        """Compare if this object is greater than another by length.
-
-        Args:
-            other: Another object of the same type to compare with.
-
-        Returns:
-            True if this object's length is greater than the other's length,
-            False otherwise. Returns NotImplemented if other is not an
-            instance of the same type.
-        """
-        if not isinstance(other, type(self)):
-            return NotImplemented
-
-        return self._total_tength() > other._result_length()
-
-    def __ge__(self, other: _ComparableByLengthInstance) -> bool:
-        """Compare if this object is greater than or equal to another by length.
-
-        Args:
-            other: Another object of the same type to compare with.
-
-        Returns:
-            True if this object's length is greater than or equal to the other's
-            length, False otherwise. Returns NotImplemented if other is not an
-            instance of the same type.
-        """
-        if not isinstance(other, type(self)):
-            return NotImplemented
-
-        return self._total_tength() >= other._result_length()
+class AbstractSnipStr(ABC):
+    @abstractmethod
+    def snip_to(self, size: PositiveInt) -> SelfAbstractSnipStr: ...
 
     @abstractmethod
-    def _total_tength(self) -> int:
-        """Calculate the total length of the object.
+    def by_side(self, side: Sides) -> SelfAbstractSnipStr: ...
 
-        This method must be implemented by subclasses to define how
-        the length should be calculated for comparison purposes.
+    @abstractmethod
+    def with_replacement_symbol(
+        self,
+        symbol: str | None = None,
+        /,
+    ) -> SelfAbstractSnipStr: ...
 
-        Returns:
-            The total length of the object as an integer.
-        """
+    @abstractmethod
+    @property
+    def source(self) -> Any: ...
+
+
+class ComparableSnipStr:
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, type(self)):
+            return NotImplemented
+
+        return self._lenght < other._lenght
+
+    def __le__(self, other: object) -> bool:
+        if not isinstance(other, type(self)):
+            return NotImplemented
+
+        return self._lenght <= other._lenght
+
+    def __gt__(self, other: object) -> bool:
+        if not isinstance(other, type(self)):
+            return NotImplemented
+
+        return self._lenght > other._lenght
+
+    def __ge__(self, other: object) -> bool:
+        if not isinstance(other, type(self)):
+            return NotImplemented
+
+        return self._lenght >= other._lenght
+
+
+class HashedSnipStr:
+    def __hash__(self) -> int:
+        attrs = tuple(getattr(self, attr) for attr in self.__slots__)
+
+        return hash(attrs)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, type(self)):
+            return NotImplemented
+
+        return all(
+            getattr(self, attr) == getattr(other, attr)
+            for attr in self.__slots__
+        )
+
+
+class BuilderSnipStr:
+    def _build(self, current: str) -> str:
+        current = str(current)
+        current = self._cut_back(current)
+
+        return self._add_replacement_symbol(current)
+
+    def _cut_back(self, current: str) -> str:
+        if self._side == Sides.RIGHT.value:
+            current = current[: self._lenght]
+        elif self._side == Sides.LEFT.value:
+            current = current[self._lenght :]
+
+        return current
+
+    def _add_replacement_symbol(self, current: str) -> str:
+        if self._replacement_symbol:
+            symbol_lenght = len(self._replacement_symbol)
+            if self._side == Sides.RIGHT.value:
+                current = current[:-symbol_lenght] + self._replacement_symbol
+            elif self._side == Sides.LEFT.value:
+                current = self._replacement_symbol + current[symbol_lenght:]
+
+        return current
