@@ -1,6 +1,6 @@
 from typing import Annotated, Any, Literal, TypeAlias, TypeVar, final
 
-import annotated_types
+from annotated_types import Gt
 
 from snipstr.comparison import ComparableByLength
 from snipstr.errors import (
@@ -13,7 +13,7 @@ SnipSide: TypeAlias = Literal['left', 'right']
 SelfSnipStr = TypeVar('SelfSnipStr', bound='SnipStr')
 SnipStrInstance = TypeVar('SnipStrInstance', bound='SnipStr')
 
-PositiveInt = Annotated[int, annotated_types.Gt(0)]
+PositiveInt = Annotated[int, Gt(0)]
 
 @final
 class SnipStr(ComparableByLength):
