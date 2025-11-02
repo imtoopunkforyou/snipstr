@@ -209,5 +209,15 @@ class SnipStr(ComparableByLength):
             (self._w_ellipsis == other._w_ellipsis),
         ))
 
-    def _total_tength(self):
+    def _total_tength(self) -> int:
+        """Calculate the total length of the truncated string representation.
+
+        This method implements the abstract method from ComparableByLength.
+        It returns the maximum length configured for truncation, plus 3
+        additional characters if ellipsis mode is enabled.
+
+        Returns:
+            The total length of the string representation, including
+            ellipsis if enabled.
+        """
         return self._max_lenght + (3 if self._w_ellipsis else 0)
