@@ -6,8 +6,8 @@ from snipstr.errors import (
     SnipSizeIsNotIntError,
     SnipSizeIsNotPositiveIntError,
 )
+from snipstr.constants import Sides
 
-SnipSide: TypeAlias = Literal['left', 'right']
 
 SelfSnipStr = TypeVar('SelfSnipStr', bound='SnipStr')
 SnipStrInstance = TypeVar('SnipStrInstance', bound='SnipStr')
@@ -24,7 +24,7 @@ class SnipStr(ComparableByLength):
     def __init__(self, source: Any) -> None:
         self._source = source
         self._max_lenght = len(str(source))
-        self._side = 'right'
+        self._side = Sides.RIGHT.value
         self._replacement_symbol = ''
 
     @property
@@ -41,8 +41,8 @@ class SnipStr(ComparableByLength):
 
         return self
 
-    def by_side(self, side: SnipSide, /) -> SelfSnipStr:
-        if side not in ('left', 'right'):
+    def by_side(self, side: Sides, /) -> SelfSnipStr:
+        if side not in Sides:
             raise SnipSideError(side)
 
         self._side = side
@@ -70,9 +70,9 @@ class SnipStr(ComparableByLength):
     def _add_replacement_symbol(self, current: str) -> str:
         if self._replacement_symbol:
             symbol_lenght = len(self._replacement_symbol)
-            if self._side == 'right':
+            if self._side == Sides.RIGHT.value:
                 current = current[:-symbol_lenght] + self._replacement_symbol
-            elif self._side == 'left':
+            elif self._side == Sides.LEFT.value:
                 current = self._replacement_symbol + current[symbol_lenght:]
 
         return current
