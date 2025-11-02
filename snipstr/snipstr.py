@@ -1,6 +1,6 @@
 from typing import Annotated, Any, TypeVar, final
 
-from snipstr.comparison import ComparableByLength
+from snipstr.base import ComparableByLength
 from snipstr.constants import Sides
 from snipstr.errors import (
     SnipSideError,
