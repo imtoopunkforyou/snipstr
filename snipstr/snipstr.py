@@ -55,11 +55,7 @@ class SnipStr(ComparableByLength):
         symbol: str | None = None,
         /,
     ) -> SelfSnipStr:
-        if symbol is None:
-            symbol = '...'
-        else:
-            symbol = str(symbol)
-
+        symbol = '...' if symbol is None else str(symbol)
         self._replacement_symbol = symbol
 
         return self
