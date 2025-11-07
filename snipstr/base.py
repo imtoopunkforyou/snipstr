@@ -36,6 +36,7 @@ class AbstractSnipStr(ABC):
 
 
 class ComparableSnipStr:
+    # TODO: Compare in the same way as lines are aligned in python
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, type(self)):
             return NotImplemented
