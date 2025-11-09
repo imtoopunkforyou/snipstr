@@ -44,7 +44,11 @@ external = [ "WPS" ]
 ]
 "snipstr/errors.py" = [
     "ANN401",
-] 
+]
+"snipstr/base.py" = [
+    "ANN401",
+    "UP032",
+]
 
 [format]
 skip-magic-trailing-comma = false
