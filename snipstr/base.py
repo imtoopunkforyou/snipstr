@@ -38,29 +38,36 @@ class BaseSnipStr(AbstractSnipStr):
         return self._source
 
     def __repr__(self) -> str:
-        source = (
-            (self._source[:10] + '<...>' + self._source[-10:])
-            if isinstance(self._source, str)
-            else str(self._source)
+        maximum_text_length = 30
+        if (
+            isinstance(self._source, str)
+            and len(self._source) > maximum_text_length
+        ):
+            beginning_of_source = self._source[:10]
+            end_of_source = self._source[-10:]
+            source = '{} <...> {}'.format(beginning_of_source, end_of_source)
+        else:
+            source = str(self._source)
+
+        msg = (
+            '{name}(source={source}, '
+            'length={length}, '
+            'side={side}, '
+            'replacement_symbol={symbol})'
         )
-        msg = '{name}(source={source}, lenght={lenght}, side={side}, replacement_symbol={symbol})'
 
         return msg.format(
             source=source,
             name=self.__class__.__name__,
-            lenght=self._lenght,
+            length=self._lenght,
             side=self._side,
             symbol=(
-                self._replacement_symbol
-                if self._replacement_symbol
-                else None,
+                self._replacement_symbol if self._replacement_symbol else None,
             ),
         )
 
 
 class ComparableSnipStr(BaseSnipStr):
-    __slots__ = BaseSnipStr.__slots__
-
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, type(self)):
             return NotImplemented
@@ -87,10 +94,10 @@ class ComparableSnipStr(BaseSnipStr):
 
 
 class HashedSnipStr(BaseSnipStr):
-    __slots__ = BaseSnipStr.__slots__
-
     def __hash__(self) -> int:
-        attrs = tuple(getattr(self, attr) for attr in self.__slots__)
+        attrs = tuple(  # type: ignore[var-annotated]
+            getattr(self, attr) for attr in self.__slots__
+        )
 
         return hash(attrs)
 
@@ -98,15 +105,13 @@ class HashedSnipStr(BaseSnipStr):
         if not isinstance(other, type(self)):
             return NotImplemented
 
-        return all(
+        return all(  # type: ignore[var-annotated]
             getattr(self, attr) == getattr(other, attr)
             for attr in self.__slots__
         )
 
 
 class BuilderSnipStr(BaseSnipStr):
-    __slots__ = BaseSnipStr.__slots__
-
     def _build(self, current: str) -> str:
         current = str(current)
         current = self._cut_back(current)

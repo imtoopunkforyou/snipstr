@@ -1,9 +1,8 @@
-from typing import Any, final
+from typing import final
 
 from typing_extensions import Self
 
 from snipstr.base import (
-    BaseSnipStr,
     BuilderSnipStr,
     ComparableSnipStr,
     HashedSnipStr,

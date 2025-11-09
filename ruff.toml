@@ -47,6 +47,7 @@ external = [ "WPS" ]
 ]
 "snipstr/base.py" = [
     "ANN401",
+    "UP032",
 ]
 
 [format]
