@@ -1,46 +1,46 @@
-from typing import Annotated, Any, TypeVar, final
+from typing import Any, final
 
-from snipstr.base import ComparableByLength
+from typing_extensions import Self
+
+from snipstr.base import (
+    BaseSnipStr,
+    BuilderSnipStr,
+    ComparableSnipStr,
+    HashedSnipStr,
+)
 from snipstr.constants import Sides
 from snipstr.errors import (
     SnipSideError,
     SnipSizeIsNotIntError,
     SnipSizeIsNotPositiveIntError,
 )
-
-SelfSnipStr = TypeVar('SelfSnipStr', bound='SnipStr')
-SnipStrInstance = TypeVar('SnipStrInstance', bound='SnipStr')
-
-PositiveInt = Annotated[int, 'An integer that is greater than 0.']
+from snipstr.types import PositiveInt
 
 
 @final
-class SnipStr(ComparableByLength):
+class SnipStr(ComparableSnipStr, HashedSnipStr, BuilderSnipStr):
     """Example:
     >>> TODO = 'TODO'
     """
 
-    def __init__(self, source: Any) -> None:
-        self._source = source
-        self._max_lenght = len(str(source))
-        self._side = Sides.RIGHT.value
-        self._replacement_symbol = ''
+    __slots__ = (
+        '_lenght',
+        '_replacement_symbol',
+        '_side',
+        '_source',
+    )
 
-    @property
-    def source(self) -> Any:
-        return self._source
-
-    def snip_to(self, size: PositiveInt, /) -> SelfSnipStr:
+    def snip_to(self, size: PositiveInt, /) -> Self:
         if not isinstance(size, int):
             raise SnipSizeIsNotIntError(size)
         if size <= 0:
             raise SnipSizeIsNotPositiveIntError(size)
 
-        self._max_lenght = size
+        self._lenght = size
 
         return self
 
-    def by_side(self, side: Sides, /) -> SelfSnipStr:
+    def by_side(self, side: Sides, /) -> Self:
         if side not in Sides:
             raise SnipSideError(side)
 
@@ -52,7 +52,7 @@ class SnipStr(ComparableByLength):
         self,
         symbol: str | None = None,
         /,
-    ) -> SelfSnipStr:
+    ) -> Self:
         default = '...'
         symbol = default if symbol is None else str(symbol)
 
@@ -61,7 +61,7 @@ class SnipStr(ComparableByLength):
         return self
 
     def __len__(self) -> int:
-        return self._max_lenght
+        return self._lenght
 
     def __str__(self) -> str:
         return self._build(str(self._source))

@@ -1,42 +1,66 @@
 from abc import ABC, abstractmethod
-from typing import Any, TypeVar
+from typing import Any
+
+from typing_extensions import Self
 
 from snipstr.constants import Sides
 from snipstr.types import PositiveInt
 
-SelfAbstractSnipStr = TypeVar('SelfAbstractSnipStr', bound='AbstractSnipStr')
-
-
-class SlotsSnipStr:
-    __slots__ = (
-        '_lenght',
-        '_replacement_symbol',
-        '_side',
-        '_source',
-    )
-
 
 class AbstractSnipStr(ABC):
     @abstractmethod
-    def snip_to(self, size: PositiveInt) -> SelfAbstractSnipStr: ...
+    def snip_to(self, size: PositiveInt) -> Self: ...
 
     @abstractmethod
-    def by_side(self, side: Sides) -> SelfAbstractSnipStr: ...
+    def by_side(self, side: Sides) -> Self: ...
 
     @abstractmethod
     def with_replacement_symbol(
         self,
         symbol: str | None = None,
         /,
-    ) -> SelfAbstractSnipStr: ...
+    ) -> Self: ...
 
-    @abstractmethod
     @property
+    @abstractmethod
     def source(self) -> Any: ...
 
 
-class ComparableSnipStr:
-    # TODO: Compare in the same way as lines are aligned in python
+class BaseSnipStr(AbstractSnipStr):
+    def __init__(self, source: Any) -> None:
+        self._source = source
+        self._lenght = len(str(source))
+        self._side = Sides.RIGHT.value
+        self._replacement_symbol = ''
+
+    @property
+    def source(self) -> Any:
+        return self._source
+
+    def __repr__(self) -> str:
+        source = (
+            (self._source[:10] + '<...>' + self._source[-10:])
+            if isinstance(self._source, str)
+            else str(self._source)
+        )
+        msg = '{name}(source={source}, lenght={lenght}, side={side}, replacement_symbol={symbol})'
+
+        return msg.format(
+            source=source,
+            name=self.__class__.__name__,
+            lenght=self._lenght,
+            side=self._side,
+            symbol=(
+                self._replacement_symbol
+                if self._replacement_symbol
+                else None,
+            ),
+        )
+
+
+class ComparableSnipStr(BaseSnipStr):
+    __slots__ = BaseSnipStr.__slots__
+
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, type(self)):
             return NotImplemented
@@ -62,7 +86,9 @@ class ComparableSnipStr:
         return self._lenght >= other._lenght
 
 
-class HashedSnipStr:
+class HashedSnipStr(BaseSnipStr):
+    __slots__ = BaseSnipStr.__slots__
+
     def __hash__(self) -> int:
         attrs = tuple(getattr(self, attr) for attr in self.__slots__)
 
@@ -78,12 +104,15 @@ class HashedSnipStr:
         )
 
 
-class BuilderSnipStr:
+class BuilderSnipStr(BaseSnipStr):
+    __slots__ = BaseSnipStr.__slots__
+
     def _build(self, current: str) -> str:
         current = str(current)
         current = self._cut_back(current)
+        current = self._add_replacement_symbol(current)
 
-        return self._add_replacement_symbol(current)
+        return current  # noqa: RET504
 
     def _cut_back(self, current: str) -> str:
         if self._side == Sides.RIGHT.value:
