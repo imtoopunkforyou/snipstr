@@ -123,7 +123,7 @@ class BuilderSnipStr(BaseSnipStr):
         if self._side == Sides.RIGHT.value:
             current = current[: self._lenght]
         elif self._side == Sides.LEFT.value:
-            current = current[self._lenght :]
+            current = current[-self._lenght :]
 
         return current
 
