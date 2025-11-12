@@ -1,6 +1,5 @@
+import sys
 from typing import final
-
-from typing_extensions import Self
 
 from snipstr.base import (
     BuilderSnipStr,
@@ -14,6 +13,11 @@ from snipstr.errors import (
     SnipSizeIsNotPositiveIntError,
 )
 from snipstr.types import PositiveInt
+
+if sys.version_info >= (3, 11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
 
 @final
@@ -40,13 +44,14 @@ class SnipStr(ComparableSnipStr, HashedSnipStr, BuilderSnipStr):
         return self
 
     def by_side(self, side: Sides | str, /) -> Self:
-        if (isinstance(side, str) and side in Sides.get_values()) or (
-            isinstance(side, Sides) and side in Sides
-        ):
+        if isinstance(side, str) and side in Sides.get_values():
             self._side = side
-            return self
+        elif isinstance(side, Sides) and side in Sides:
+            self._side = side.value
+        else:
+            raise SnipSideError(side)
 
-        raise SnipSideError(side)
+        return self
 
     def with_replacement_symbol(
         self,

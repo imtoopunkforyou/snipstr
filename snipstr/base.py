@@ -1,18 +1,21 @@
+import sys
 from abc import ABC, abstractmethod
-from typing import Any
-
-from typing_extensions import Self
 
 from snipstr.constants import Sides
 from snipstr.types import PositiveInt
 
+if sys.version_info >= (3, 11):
+    from typing import Self
+else:
+    from typing_extensions import Self
+
 
 class AbstractSnipStr(ABC):
     @abstractmethod
-    def snip_to(self, size: PositiveInt) -> Self: ...
+    def snip_to(self, size: PositiveInt, /) -> Self: ...
 
     @abstractmethod
-    def by_side(self, side: Sides) -> Self: ...
+    def by_side(self, side: Sides | str, /) -> Self: ...
 
     @abstractmethod
     def with_replacement_symbol(
@@ -23,18 +26,18 @@ class AbstractSnipStr(ABC):
 
     @property
     @abstractmethod
-    def source(self) -> Any: ...
+    def source(self) -> object: ...
 
 
 class BaseSnipStr(AbstractSnipStr):
-    def __init__(self, source: Any) -> None:
+    def __init__(self, source: object) -> None:
         self._source = source
         self._lenght = len(str(source))
         self._side = Sides.RIGHT.value
         self._replacement_symbol = ''
 
     @property
-    def source(self) -> Any:
+    def source(self) -> object:
         return self._source
 
     def __repr__(self) -> str:
