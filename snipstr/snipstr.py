@@ -39,13 +39,14 @@ class SnipStr(ComparableSnipStr, HashedSnipStr, BuilderSnipStr):
 
         return self
 
-    def by_side(self, side: Sides, /) -> Self:
-        if side not in Sides:
-            raise SnipSideError(side)
+    def by_side(self, side: Sides | str, /) -> Self:
+        if (isinstance(side, str) and side in Sides.get_values()) or (
+            isinstance(side, Sides) and side in Sides
+        ):
+            self._side = side
+            return self
 
-        self._side = side
-
-        return self
+        raise SnipSideError(side)
 
     def with_replacement_symbol(
         self,

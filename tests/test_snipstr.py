@@ -1,6 +1,5 @@
 from snipstr.constants import Sides
 from snipstr.snipstr import SnipStr
-import pytest
 
 
 def test_snipstr(long_text):
@@ -20,7 +19,6 @@ def test_snipstr_w_replacement_symbol(long_text):
     assert symbol in str(s)
 
 
-@pytest.mark.skip
 def test_create_snipstr_without_sides_enum(long_text):
     max_len = 10
     s = SnipStr(long_text)
