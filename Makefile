@@ -16,6 +16,10 @@ lint:
 tests:
 	poetry run pytest ./tests/
 
+.PHONY: cov
+cov:
+	poetry run pytest --cov=snipstr ./tests
+
 .PHONY: all
 all:
 	make lint && make tests
