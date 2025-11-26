@@ -6,8 +6,8 @@ make:
 # === Dev ===
 .PHONY: lint
 lint:
-	poetry run ruff check ./snipstr ./tests \
-	&& poetry run ruff format ./snipstr ./tests \
+	poetry run ruff format ./snipstr ./tests \
+	&& poetry run ruff check ./snipstr ./tests \
 	&& poetry run flake8 ./snipstr \
 	&& poetry run mypy ./snipstr --no-pretty \
 	&& poetry run codespell snipstr tests README.md CONTRIBUTING.md
