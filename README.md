@@ -21,10 +21,9 @@ A lightweight library for easy-to-use text truncation with a friendly interface.
 ### Example
 ```python
 >>> from snipstr.snipstr import SnipStr
->>> long_text = 'Python source code and installers are available for download for all versions!'
->>> s = SnipStr(long_text)
->>> s.snip_to(10).with_ellipsis()
-<snipstr.snipstr.SnipStr object at 0x102df6fe0>
+>>> text = 'Python source code and installers are available for download for all versions!'
+>>> s = SnipStr(text)
+>>> s.snip_to(16).by_side('right').with_replacement_symbol()
 >>> str(s)
-'Python ...'
+'Python source...'
 ```
