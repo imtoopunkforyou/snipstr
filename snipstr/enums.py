@@ -2,7 +2,7 @@ import enum
 
 
 @enum.unique
-class Sides(str, enum.Enum):
+class Sides(enum.Enum):
     LEFT = 'left'
     RIGHT = 'right'
 
