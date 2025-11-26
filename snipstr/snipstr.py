@@ -6,7 +6,7 @@ from snipstr.base import (
     ComparableSnipStr,
     HashedSnipStr,
 )
-from snipstr.constants import Sides
+from snipstr.enums import Sides
 from snipstr.errors import (
     SnipSideError,
     SnipSizeIsNotIntError,

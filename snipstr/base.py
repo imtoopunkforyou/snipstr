@@ -1,7 +1,7 @@
 import sys
 from abc import ABC, abstractmethod
 
-from snipstr.constants import Sides
+from snipstr.enums import Sides
 from snipstr.types import PositiveInt
 
 if sys.version_info >= (3, 11):

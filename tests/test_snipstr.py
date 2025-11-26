@@ -1,6 +1,6 @@
 import pytest
 
-from snipstr.constants import Sides
+from snipstr.enums import Sides
 from snipstr.snipstr import SnipStr
 
 
