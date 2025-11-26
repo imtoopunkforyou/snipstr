@@ -1,3 +1,4 @@
+from snipstr.enums import Sides
 from snipstr.snipstr import SnipStr
 
 
@@ -99,3 +100,55 @@ def test_eq_not_implemented(long_text):
 
     result = s.__eq__([])
     assert result is NotImplemented
+
+
+def test_cut_back_with_left_side(long_text, length):
+    s = SnipStr(long_text)
+    s.snip_to(length).by_side(Sides.LEFT)
+    # Ensure _side is LEFT
+    assert s._side == Sides.LEFT.value
+
+    # Call _build which internally calls _cut_back
+    result = str(s)
+    # Should take last TEST_LENGTH characters
+    assert len(result) == length
+    assert result == str(long_text)[-length:]
+
+
+def test_add_replacement_symbol_with_left_side(long_text, length):
+    s = SnipStr(long_text)
+    symbol = '...'
+    s.snip_to(length).by_side(Sides.LEFT).with_replacement_symbol(symbol)
+
+    # Ensure conditions are met
+    assert s._side == Sides.LEFT.value
+    assert s._replacement_symbol == symbol
+
+    # Call _build which internally calls _add_replacement_symbol
+    result = str(s)
+    assert len(result) == length
+    # With LEFT side, symbol should be at the start
+    assert result.startswith(symbol)
+
+
+def test_cut_back_elif_branch_not_taken(long_text, length):
+    s = SnipStr(long_text)
+    s.snip_to(length)
+    s._side = 'invalid'
+
+    result = str(s)
+    assert s._lenght == length
+    assert len(result) == len(str(long_text))
+
+
+def test_add_replacement_symbol_elif_branch_not_taken(long_text, length):
+    s = SnipStr(long_text)
+    symbol = '...'
+    s.snip_to(length).with_replacement_symbol(symbol)
+    s._side = 'invalid'
+
+    assert s._replacement_symbol == symbol
+
+    result = str(s)
+    assert s._lenght == length
+    assert len(result) == len(str(long_text))

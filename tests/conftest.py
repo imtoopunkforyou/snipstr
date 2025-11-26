@@ -35,3 +35,8 @@ def source(fake):
 @pytest.fixture
 def very_long_text(fake):
     return fake.text(max_nb_chars=1_000) + fake.text(max_nb_chars=1_000)
+
+
+@pytest.fixture
+def length():
+    return 10
