@@ -70,3 +70,32 @@ def test_repr():
     assert repr(small_s) == (
         'SnipStr(source=lol, length=3, side=right, replacement_symbol=(None,))'
     )
+
+
+def test_comparable_not_implemented(long_text):
+    s = SnipStr(long_text)
+
+    result = s.__lt__('not a SnipStr')
+    assert result is NotImplemented
+
+    result = s.__le__(123)
+    assert result is NotImplemented
+
+    result = s.__gt__([])
+    assert result is NotImplemented
+
+    result = s.__ge__(None)
+    assert result is NotImplemented
+
+
+def test_eq_not_implemented(long_text):
+    s = SnipStr(long_text)
+
+    result = s.__eq__('not a SnipStr')
+    assert result is NotImplemented
+
+    result = s.__eq__(123)
+    assert result is NotImplemented
+
+    result = s.__eq__([])
+    assert result is NotImplemented
