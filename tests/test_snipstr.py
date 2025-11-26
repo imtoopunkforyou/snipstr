@@ -11,6 +11,7 @@ def test_snipstr(long_text, side):
     s.snip_to(max_len).by_side(side).with_replacement_symbol()
 
     assert len(str(s)) < len(long_text)
+    assert s._side == side.value
     assert len(str(s)) == max_len
     assert len(s) == len(str(s))
 

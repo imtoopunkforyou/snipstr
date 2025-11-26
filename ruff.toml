@@ -37,7 +37,8 @@ external = [ "WPS" ]
 "tests/*" = [
     "S101",
     "ANN201",
-    "ANN001"
+    "ANN001",
+    "SLF001",
 ]
 "snipstr/snipstr.py" = [
     "ANN401",
