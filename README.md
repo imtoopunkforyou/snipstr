@@ -20,7 +20,7 @@ A lightweight library for easy-to-use text truncation with a friendly interface.
 
 ### Example
 ```python
->>> from snipstr.snipstr import SnipStr
+>>> from snipstr import SnipStr
 >>> text = 'Python source code and installers are available for download for all versions!'
 >>> s = SnipStr(text)
 >>> s.snip_to(16).by_side('right').with_replacement_symbol()
