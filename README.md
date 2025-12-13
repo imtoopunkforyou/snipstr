@@ -1,3 +1,5 @@
+# snipstr
+
 [![codecov](https://codecov.io/github/imtoopunkforyou/snipstr/graph/badge.svg?token=65OY6J3HP9)](https://codecov.io/github/imtoopunkforyou/snipstr)
 [![tests](https://github.com/imtoopunkforyou/snipstr/actions/workflows/tests.yaml/badge.svg)](https://github.com/imtoopunkforyou/snipstr/actions/workflows/tests.yaml)
 [![pypi package version](https://img.shields.io/pypi/v/snipstr.svg)](https://pypi.org/project/snipstr)
@@ -9,9 +11,15 @@
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![license](https://img.shields.io/pypi/l/snipstr.svg)](https://github.com/imtoopunkforyou/snipstr/blob/main/LICENSE)  
 
+<p align="center">
+  <a href="https://pypi.org/project/snipstr/">
+    <img src="https://raw.githubusercontent.com/imtoopunkforyou/snipstr/main/.github/badge/logo.png"
+         alt="SnipStr logo">
+  </a>
+</p>
 
-# snipstr
 A lightweight library for easy-to-use text truncation with a friendly interface.
+
 
 # ⚠️ Attention ⚠️
 - In development.  
