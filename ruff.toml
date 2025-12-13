@@ -29,7 +29,7 @@ ignore = [
     "D107",
     "D100",
     "D105",
-    "D",  # TODO off
+    "D104",
 ]
 external = [ "WPS" ]
 
@@ -39,17 +39,7 @@ external = [ "WPS" ]
     "ANN201",
     "ANN001",
     "SLF001",
-]
-"snipstr/snipstr.py" = [
-    "ANN401",
-    "RET504",
-]
-"snipstr/errors.py" = [
-    "ANN401",
-]
-"snipstr/base.py" = [
-    "ANN401",
-    "UP032",
+    "D",
 ]
 
 [format]

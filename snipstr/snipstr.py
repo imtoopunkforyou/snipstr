@@ -22,8 +22,14 @@ else:
 
 @final
 class SnipStr(ComparableSnipStr, HashedSnipStr, BuilderSnipStr):
-    """Example:
-    >>> TODO = 'TODO'
+    """String truncation class with fluent interface.
+
+    Example:
+        >>> from snipstr import SnipStr
+        >>> text = 'Python is an interpreted programming language.'
+        >>> s = SnipStr(text)
+        >>> s.snip_to(16).by_side('right').with_replacement_symbol()
+        >>> str(s)  # 'Python is an ...'
     """
 
     __slots__ = (
@@ -34,6 +40,18 @@ class SnipStr(ComparableSnipStr, HashedSnipStr, BuilderSnipStr):
     )
 
     def snip_to(self, size: PositiveInt, /) -> Self:
+        """Set the target size for the snipped string.
+
+        Args:
+            size: The maximum length of the resulting string.
+
+        Returns:
+            Self: The instance for method chaining.
+
+        Raises:
+            SnipSizeIsNotIntError: If size is not an integer.
+            SnipSizeIsNotPositiveIntError: If size is not positive.
+        """
         if not isinstance(size, int):
             raise SnipSizeIsNotIntError(size)
         if size <= 0:
@@ -44,6 +62,17 @@ class SnipStr(ComparableSnipStr, HashedSnipStr, BuilderSnipStr):
         return self
 
     def by_side(self, side: Sides | str, /) -> Self:
+        """Set the side from which the string will be truncated.
+
+        Args:
+            side: The side to truncate from.
+
+        Returns:
+            Self: The instance for method chaining.
+
+        Raises:
+            SnipSideError: If side is not a valid Sides value.
+        """
         if isinstance(side, str) and side in Sides.get_values():
             self._side = side
         elif isinstance(side, Sides) and side in Sides:
@@ -58,6 +87,14 @@ class SnipStr(ComparableSnipStr, HashedSnipStr, BuilderSnipStr):
         symbol: str | None = None,
         /,
     ) -> Self:
+        """Set the replacement symbol to indicate truncation.
+
+        Args:
+            symbol: The symbol to use. Defaults to '...' if None.
+
+        Returns:
+            Self: The instance for method chaining.
+        """
         default = '...'
         symbol = default if symbol is None else str(symbol)
 

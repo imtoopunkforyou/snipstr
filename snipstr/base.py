@@ -11,25 +11,76 @@ else:
 
 
 class AbstractSnipStr(ABC):
-    @abstractmethod
-    def snip_to(self, size: PositiveInt, /) -> Self: ...
+    """Abstract base class for string snipping operations.
+
+    This class defines the contract that all SnipStr implementations
+    must follow. It provides abstract methods for configuring and
+    executing string truncation.
+    """
 
     @abstractmethod
-    def by_side(self, side: Sides | str, /) -> Self: ...
+    def snip_to(self, size: PositiveInt, /) -> Self:
+        """Set the target size for the snipped string.
+
+        Args:
+            size: The maximum length of the resulting string.
+                  Must be a positive integer.
+
+        Returns:
+            Self: The instance for method chaining.
+        """
+
+    @abstractmethod
+    def by_side(self, side: Sides | str, /) -> Self:
+        """Set the side from which the string will be truncated.
+
+        Args:
+            side: The side to truncate from.
+                  Can be a Sides enum value or string.
+
+        Returns:
+            Self: The instance for method chaining.
+        """
 
     @abstractmethod
     def with_replacement_symbol(
         self,
         symbol: str | None = None,
         /,
-    ) -> Self: ...
+    ) -> Self:
+        """Set the replacement symbol to indicate truncation.
+
+        Args:
+            symbol: The symbol to append/prepend at the truncation point.
+                    Defaults to None (no replacement symbol).
+
+        Returns:
+            Self: The instance for method chaining.
+        """
 
     @property
     @abstractmethod
-    def source(self) -> object: ...
+    def source(self) -> object:
+        """Return the original source object.
+
+        Returns:
+            object: The original object that was passed for snipping.
+        """
 
 
 class BaseSnipStr(AbstractSnipStr):
+    """Base implementation of the string snipping functionality.
+
+    This class provides the foundational implementation for storing and managing
+    the source object, length, side, and replacement symbol settings.
+
+    Attributes:
+        _source: The original source object to be snipped.
+        _lenght: The target length for the snipped string.
+        _side: The side from which to truncate (left or right).
+        _replacement_symbol: The symbol to indicate truncation.
+    """
+
     def __init__(self, source: object) -> None:
         self._source = source
         self._lenght = len(str(source))
@@ -38,6 +89,11 @@ class BaseSnipStr(AbstractSnipStr):
 
     @property
     def source(self) -> object:
+        """Return the original source object.
+
+        Returns:
+            object: The original object that was passed for snipping.
+        """
         return self._source
 
     def __repr__(self) -> str:
@@ -48,7 +104,7 @@ class BaseSnipStr(AbstractSnipStr):
         ):
             beginning_of_source = self._source[:10]
             end_of_source = self._source[-10:]
-            source = '{} <...> {}'.format(beginning_of_source, end_of_source)
+            source = f'{beginning_of_source} <...> {end_of_source}'
         else:
             source = str(self._source)
 
@@ -71,6 +127,12 @@ class BaseSnipStr(AbstractSnipStr):
 
 
 class ComparableSnipStr(BaseSnipStr):
+    """SnipStr with comparison operations based on length.
+
+    This class extends BaseSnipStr with rich comparison methods that compare
+    instances based on their target length values.
+    """
+
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, type(self)):
             return NotImplemented
@@ -97,6 +159,13 @@ class ComparableSnipStr(BaseSnipStr):
 
 
 class HashedSnipStr(BaseSnipStr):
+    """SnipStr with hashing and equality support.
+
+    This class extends BaseSnipStr with hash and equality implementations,
+    making instances usable as dictionary keys and in sets. Hash and equality
+    are computed based on all attributes defined in __slots__.
+    """
+
     def __hash__(self) -> int:
         attrs = tuple(  # type: ignore[var-annotated]
             getattr(self, attr) for attr in self.__slots__
@@ -115,12 +184,17 @@ class HashedSnipStr(BaseSnipStr):
 
 
 class BuilderSnipStr(BaseSnipStr):
+    """SnipStr with string building capabilities.
+
+    This class extends BaseSnipStr with methods to build the final snipped
+    string by applying truncation and replacement symbol operations.
+    """
+
     def _build(self, current: str) -> str:
         current = str(current)
         current = self._cut_back(current)
-        current = self._add_replacement_symbol(current)
 
-        return current  # noqa: RET504
+        return self._add_replacement_symbol(current)
 
     def _cut_back(self, current: str) -> str:
         if self._side == Sides.RIGHT.value:

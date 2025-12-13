@@ -1,6 +1,3 @@
-from typing import Any
-
-
 class SnipSizeIsNotIntError(TypeError):
     """Raised when the snip size parameter is not an integer.
 
@@ -11,7 +8,7 @@ class SnipSizeIsNotIntError(TypeError):
         size: The value that was provided instead of an integer.
     """
 
-    def __init__(self, size: Any, /) -> None:
+    def __init__(self, size: object, /) -> None:
         msg = (
             'You must specify int for snip size. Value of `{0}` is not suitable'
         )
@@ -28,7 +25,7 @@ class SnipSizeIsNotPositiveIntError(ValueError):
         size: The non-positive integer value that was provided.
     """
 
-    def __init__(self, size: Any, /) -> None:
+    def __init__(self, size: object, /) -> None:
         msg = (
             'You must specify positive number for snip size. '
             'Value of `{0}` is not suitable'
@@ -46,7 +43,7 @@ class SnipSideError(ValueError):
         side: The invalid value that was provided instead of 'left' or 'right'.
     """
 
-    def __init__(self, side: Any, /) -> None:
+    def __init__(self, side: object, /) -> None:
         msg = (
             'The side can only be the values of `left` or `right`. '
             'Value of `{0}` is not suitable'
