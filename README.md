@@ -1,7 +1,3 @@
-# ⚠️ Attention ⚠️
-- In development.  
-- May not work as you expect and may cause errors.
-
 # snipstr
 [![codecov](https://codecov.io/github/imtoopunkforyou/snipstr/graph/badge.svg?token=65OY6J3HP9)](https://codecov.io/github/imtoopunkforyou/snipstr)
 [![tests](https://github.com/imtoopunkforyou/snipstr/actions/workflows/tests.yaml/badge.svg)](https://github.com/imtoopunkforyou/snipstr/actions/workflows/tests.yaml)
