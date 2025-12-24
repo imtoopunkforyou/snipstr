@@ -99,6 +99,6 @@ Two `SnipStr` instances are equal if all instance attributes (`source`, `snip_to
 ```
 
 ## License
-Curlifier is released under the MIT License. See the bundled [LICENSE](https://github.com/imtoopunkforyou/snipstr/blob/main/LICENSE) file for details.
+SnipStr is released under the MIT License. See the bundled [LICENSE](https://github.com/imtoopunkforyou/snipstr/blob/main/LICENSE) file for details.
 
 The logo was created using [Font Meme](https://fontmeme.com/graffiti-creator/).
