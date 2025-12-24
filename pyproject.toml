@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "snipstr"
-version = "1.0.1"
+version = "1.0.2"
 description = "A lightweight library for easy-to-use text truncation with a friendly interface."
 authors = [
     "Timur Valiev <cptchunk@yandex.ru>"
