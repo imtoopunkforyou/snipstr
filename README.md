@@ -32,7 +32,9 @@ All you need is to import `SnipStr`:
 >>> from snipstr import SnipStr
 >>> text = 'Python source code and installers are available for download for all versions!'
 >>> s = SnipStr(text)
->>> s.snip_to(16).by_side('right').with_replacement_symbol()
+>>> s.snip_to(16).by_side('right')
+>>> str(s)  # 'Python source co'
+>>> s.with_replacement_symbol()
 >>> str(s)  # 'Python source...'
 >>> s.by_side('left')
 >>> str(s)  # '...all versions!'
@@ -95,7 +97,7 @@ Two `SnipStr` instances are equal if all instance attributes (`source`, `snip_to
 >>> s3 = SnipStr('Hello')
 >>> s3.snip_to(3).by_side('left')
 >>> s1 == s2  # will return True
->>> s1 == s3  # Will return False 
+>>> s1 == s3  # will return False 
 ```
 
 ## License
