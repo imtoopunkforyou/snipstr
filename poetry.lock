@@ -204,14 +204,14 @@ pyflakes = ">=3.4.0,<3.5.0"
 
 [[package]]
 name = "flake8-digit-separator"
-version = "1.0.4"
+version = "1.0.5"
 description = "Correct placement of separators"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["lint"]
 files = [
-    {file = "flake8_digit_separator-1.0.4-py3-none-any.whl", hash = "sha256:8aec7bf52590db648d1c73db0f6537db0c79e83d906d20a26a4f9f9e02118956"},
-    {file = "flake8_digit_separator-1.0.4.tar.gz", hash = "sha256:cd9cfa077fd8b83e42391464cc4a28b681e79502cdf99000adab5e9e53c0a98a"},
+    {file = "flake8_digit_separator-1.0.5-py3-none-any.whl", hash = "sha256:361e3b3d2f07a75ea595381a05bf8d9782223f07053d213da86e406efe7a9c77"},
+    {file = "flake8_digit_separator-1.0.5.tar.gz", hash = "sha256:6149645020b1ca4f1d77dfa0504b9f66e9e8d7efb39132dd5392d52f5bae1c7f"},
 ]
 
 [package.dependencies]
