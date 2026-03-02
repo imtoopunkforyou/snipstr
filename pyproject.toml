@@ -55,7 +55,7 @@ python = "^3.10"
 [tool.poetry.group.lint.dependencies]
 wemake-python-styleguide = "^1.4.0"
 mypy = "^1.18.2"
-ruff = "^0.14.2"
+ruff = ">=0.14.2,<0.16.0"
 codespell = "^2.4.1"
 flake8-digit-separator = "^1.0.3"
 
