@@ -6,3 +6,7 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
+    interval: cron
+    cronjob: "0 8 * * 1"
+    timezone: UTC
+  open-pull-requests-limit: 10
